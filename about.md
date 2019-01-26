@@ -28,12 +28,12 @@ author_profile: true
 ## Project
 
 * [**GPS Tracker, Power Controller via LoRa**](http://www.musma.net/oss)  
-LoRaWAN을 통해 각종 정보를 전달, 또는 제어하는 시스템 내 단말기 및 게이트웨이 펌웨어, 서버 어플리케이션 등 개발
+[LoRaWAN](https://lora-alliance.org/about-lorawan)을 통해 각종 정보를 전달, 또는 제어하는 시스템 내 단말기 및 게이트웨이 펌웨어, 서버 어플리케이션 등 개발
 
 * [**크레인 충돌 방지 시스템**](http://www.musma.net/c_one)  
 타워크레인에 자이로센서, 경사센서, 네트워크 장비 등을 설치하여 크레인 간 충돌을 사전에 알람으로써 방지해주는 산업 안전 시스템 설계 및 어플리케이션 개발
 
-* **IBM Watson 연동 - NLP 커스텀 모델링 도구**  
+* **[IBM Watson](https://www.ibm.com/watson/kr-ko/services/knowledge-studio/) 연동 - NLP 커스텀 모델링 도구**  
 특정 분야(자율주행, ADAS 등)에서 실제 거래되는 다수의 주요 특허를 학습하여 기술 요소 및 그들 간 관계를 분석해 응용 특허를 개발하거나, 또는 기존 특허가 가진 문제점을 찾아내주는 시스템 개발  
 
 * **스마트 목발**  
@@ -45,12 +45,12 @@ LoRaWAN을 통해 각종 정보를 전달, 또는 제어하는 시스템 내 단
 
 
 ## 좋아하는 문구
-존 롤스[John Rawls, 1921~2002]
+[존 롤스](https://en.wikipedia.org/wiki/John_Rawls) [John Rawls, 1921~2002]
 
 가장 불리한 상황에 있는 사람들의 이익을 최대화하기 위해서는 사회경제적 불평등이 정당화된다. 우연히 주어진 선천적이거나 사회적인 환경을 자신을 위해 이용하려면, 그 행위가 반드시 공동의 이익에 도움이 되어야 한다.
 
 
-## 존재의 이유 (Raison d'être)
+## 존재의 이유 ([Raison d'être](https://en.wikipedia.org/wiki/Raison_d%27%C3%AAtre))
 - ISABELITA, MI VIDA
 - LUCIANO SONG
 - VALENTINO SONG
