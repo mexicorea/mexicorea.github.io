@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: single
 title:  "완전한 틈"
 date:   "2012-06-09 23:52:01"
 categories: diary
