@@ -51,6 +51,6 @@ author_profile: true
 
 
 ## 존재의 이유 ([Raison d'être](https://en.wikipedia.org/wiki/Raison_d%27%C3%AAtre))
-- ISABELITA, MI VIDA
-- LUCIANO SONG
-- VALENTINO SONG
+- Isabelita, Mi vida
+- Luciano Song
+- Valentino Song

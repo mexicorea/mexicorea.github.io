@@ -16,9 +16,9 @@ minimal_mistakes_skin    : "dark" # "air", "aqua", "contrast", "dark", "dirt", "
 
 # Site Settings
 locale                   : "ko"
-title                    : "Song's Dev Log"
+title                    : "Song's Log"
 title_separator          : "-"
-name                     : "Song's Dev Log"
+name                     : "Song's Log"
 description              : "An amazing website."
 url                      : "https://mexicorea.github.io" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
@@ -114,7 +114,7 @@ author:
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
-      url: mailto:templarsky@gmail.com
+      url: mailto:mexicoreanito@gmail.com
     - label: "Website"
       icon: "fas fa-fw fa-link"
       # url: "https://your-website.com"
@@ -123,13 +123,13 @@ author:
       # url: "https://twitter.com/"
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
-      url: "https://facebook.com/templarsky"
+      url: "https://www.facebook.com/mexicoreanito"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      url: "https://github.com/mexicorea"
+      # url: "https://github.com/mexicorea"
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
-      # url: "https://instagram.com/"
+      url: "https://www.instagram.com/mexicorea"
 
 # Site Footer
 footer:
@@ -139,10 +139,10 @@ footer:
       # url:
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
-      url: "https://facebook.com/templarsky"
+      url: "https://www.facebook.com/mexicoreanito"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      url: "https://github.com/mexicorea"
+      # url: "https://github.com/mexicorea"
     - label: "GitLab"
       icon: "fab fa-fw fa-gitlab"
       # url:
@@ -151,7 +151,7 @@ footer:
       # url:
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
-      # url:
+      url: "https://www.instagram.com/mexicorea"
 
 
 # Reading Files
