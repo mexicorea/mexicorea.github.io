@@ -4,6 +4,10 @@
   License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
  */
 
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
 :root {
 	--accent: #586e75;
 	--accent-dark: #073642;

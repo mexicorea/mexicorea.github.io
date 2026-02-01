@@ -1,63 +1,406 @@
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
-import Layout from '../layouts/BlogPost.astro';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { cv } from '../data/cv';
+import { marked } from 'marked';
+
+const { general, allCollections } = cv;
+
+function renderMarkdown(text) {
+  return marked.parse(text || '');
+}
 ---
 
-<Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2021')}
-	heroImage={AboutHeroImage}
->
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo
-		viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam
-		adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus
-		et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus
-		vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque
-		sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
-	</p>
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`${general.displayName} - About`} description={general.byline} />
+		<style>
+            :root {
+                --font-size: 16px;
+                --line-height: 1.6;
+                --grey1: #111;
+                --grey2: #555;
+                --grey3: #999;
+                --wash1: #e5e5e5;
+                --wash2: #f2f2f2;
+                --transparentBorder: rgba(0, 0, 0, 0.05);
+            }
 
-	<p>
-		Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non
-		tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non
-		blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna
-		porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-		massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc.
-		Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis
-		bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra
-		massa massa ultricies mi.
-	</p>
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --grey1: #eee;
+                    --grey2: #bbb;
+                    --grey3: #888;
+                    --wash1: #4E4E4E;
+                    --wash2: #383838;
+                    --transparentBorder: rgb(255 255 255 / 0.1);
+                }
+            }
 
-	<p>
-		Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl
-		suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet
-		nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae
-		turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-		dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat
-		semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus
-		vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-		facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam
-		vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla
-		urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
-	</p>
+            main {
+                width: 100%;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: clamp(24px, calc((100vw - 800px) / 2), 72px) 20px;
+                font-size: var(--font-size);
+                line-height: var(--line-height);
+                color: var(--grey1);
+            }
 
-	<p>
-		Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper
-		viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc
-		scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur
-		gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-		pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim
-		blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id
-		cursus metus aliquam eleifend mi.
-	</p>
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
 
-	<p>
-		Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta
-		nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam
-		tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci
-		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
-		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
-	</p>
-</Layout>
+            /* Header */
+            .profileHeader {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                column-gap: 16px;
+            }
+
+            .profileHeader h1 {
+                font-size: 20px;
+                font-weight: 350;
+                margin: 0;
+                line-height: 1.2;
+            }
+
+            .byline {
+                color: var(--grey2);
+                margin-top: 4px;
+            }
+            
+            .website {
+                display: block;
+                margin-top: 4px;
+                font-size: 0.9em;
+                color: var(--accent);
+            }
+
+            .profilePhoto {
+                width: 92px;
+                height: 92px;
+                border-radius: 50%;
+                flex-shrink: 0;
+                background-color: var(--wash2);
+                overflow: hidden;
+            }
+
+            .profilePhoto img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            /* Sections */
+            .profileSection {
+                margin: 60px 0;
+            }
+            .profileSection:first-of-type {
+                margin: 36px 0;
+            }
+
+            .profileSection h3 {
+                font-size: var(--font-size);
+                font-weight: normal;
+                margin-bottom: calc((var(--font-size) * var(--line-height)) / 2);
+                color: var(--grey1);
+            }
+
+            .experiences, .contacts {
+                display: flex;
+                flex-direction: column;
+                row-gap: 36px;
+                margin-top: 24px;
+            }
+            
+            .contacts {
+                row-gap: 16px;
+            }
+
+            .experience {
+                display: flex;
+                flex-direction: row;
+                column-gap: 36px;
+            }
+
+            /* Experience Item */
+            .year {
+                color: var(--grey3);
+                font-variant-numeric: tabular-nums;
+                position: relative;
+                flex-shrink: 0;
+                width: 120px; /* Increased to prevent wrapping */
+            }
+
+            .experienceContent {
+                flex: 1;
+                min-width: 0; /* Fix flex overflow */
+            }
+
+            .title {
+                margin-bottom: 4px;
+            }
+
+            .title a:hover {
+                border-bottom: 1px solid;
+            }
+
+            .linkArrow svg {
+                margin-left: 2px;
+                vertical-align: middle;
+            }
+
+            .location {
+                color: var(--grey2);
+            }
+
+            .description {
+                color: var(--grey2);
+                margin-top: calc((var(--font-size) * var(--line-height)) / 2);
+            }
+            
+            /* Markdown Styles */
+            .description :global(p) {
+                margin-bottom: calc((var(--font-size) * var(--line-height)) / 2);
+            }
+            .description :global(p:last-child) {
+                margin-bottom: 0;
+            }
+            .description :global(ul) {
+                list-style-type: disc;
+                padding-left: 1.5em;
+                margin: calc((var(--font-size) * var(--line-height)) / 6) 0;
+            }
+            .description :global(li) {
+                margin-bottom: calc((var(--font-size) * var(--line-height)) / 6);
+            }
+            .description :global(h2) {
+                font-size: calc(var(--font-size) * 1.1);
+                font-weight: 600;
+                margin-top: calc((var(--font-size) * var(--line-height)) * 0.75);
+                margin-bottom: calc((var(--font-size) * var(--line-height)) / 6);
+                color: var(--grey1);
+            }
+            .description :global(h2:first-child) {
+                margin-top: 0;
+            }
+            .description :global(strong) {
+                font-weight: 600;
+                color: var(--grey1);
+            }
+            .description :global(a) {
+                border-bottom: 1px solid var(--wash1);
+            }
+
+            /* Attachments */
+            .attachments {
+                margin-top: 12px;
+                width: 100%;
+                overflow-x: auto;
+                padding-bottom: 8px; /* For scrollbar space */
+            }
+            
+            .attachments::-webkit-scrollbar {
+                height: 4px;
+            }
+            .attachments::-webkit-scrollbar-thumb {
+                background: var(--grey3);
+                border-radius: 4px;
+            }
+
+            .attachments-list {
+                display: flex;
+                gap: 8px;
+                width: max-content;
+            }
+
+            .media-item {
+                height: 90px;
+                background-color: var(--wash2);
+                border-radius: 8px;
+                overflow: hidden;
+                position: relative;
+                cursor: pointer;
+                border: 1px solid var(--transparentBorder);
+                flex-shrink: 0;
+            }
+
+            .media-item img {
+                height: 100%;
+                width: auto;
+                display: block;
+                object-fit: cover;
+            }
+
+             /* Lightbox / Dimmed Viewer */
+            #lightbox {
+                position: fixed;
+                z-index: 1000;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.85);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+            }
+
+            #lightbox.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            #lightbox img {
+                max-width: 90%;
+                max-height: 90vh;
+                box-shadow: 0 0 20px rgba(0,0,0,0.5);
+                border: 10px solid #fff;
+                transform: scale(0.9);
+                transition: transform 0.3s ease;
+            }
+
+            #lightbox.active img {
+                transform: scale(1);
+            }
+
+            @media (max-width: 480px) {
+                .profileHeader {
+                    flex-direction: column;
+                    text-align: center;
+                    row-gap: 16px;
+                }
+                .experience {
+                    flex-direction: column;
+                }
+                .year {
+                    width: auto;
+                    margin-bottom: 4px;
+                }
+                .experiences, .contacts {
+                    margin-left: 0; 
+                }
+            }
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+            <!-- Profile Header -->
+            <div class="profileHeader">
+                <div class="profilePhoto">
+                    <img src={general.profilePhoto} alt={general.displayName} />
+                </div>
+                <div class="profileInfo">
+                    <h1>{general.displayName}</h1>
+                    <div class="byline">{general.byline}</div>
+                    {general.website && <a href={general.websiteURL || general.website} target="_blank" class="website">{general.website}</a>}
+                </div>
+            </div>
+
+            <!-- About Section -->
+            {general.about && (
+                <section class="profileSection about">
+                    <h3>About</h3>
+                    <div class="description" set:html={renderMarkdown(general.about)} />
+                </section>
+            )}
+
+            <!-- Collections -->
+            {allCollections.map((collection) => (
+                <section class="profileSection">
+                    <h3>{collection.name}</h3>
+                    <div class={collection.name === "Contact" ? "contacts" : "experiences"}>
+                        {collection.items.map((item) => (
+                            <div class="experience">
+                                <div class="year">
+                                    <span>{collection.name === "Contact" ? item.platform : item.year}</span>
+                                </div>
+                                <div class="experienceContent">
+                                    <div class="title">
+                                        {item.url ? (
+                                            <>
+                                                <a href={item.url} target="_blank">
+                                                    {item.heading || item.handle}
+                                                </a>
+                                                <span class="linkArrow">
+                                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M3.5 3C3.22386 3 3 3.22386 3 3.5C3 3.77614 3.22386 4 3.5 4V3ZM8.5 3.5H9C9 3.22386 8.77614 3 8.5 3V3.5ZM8 8.5C8 8.77614 8.22386 9 8.5 9C8.77614 9 9 8.77614 9 8.5H8ZM2.64645 8.64645C2.45118 8.84171 2.45118 9.15829 2.64645 9.35355C2.84171 9.54882 3.15829 9.54882 3.35355 9.35355L2.64645 8.64645ZM3.5 4H8.5V3H3.5V4ZM8 3.5V8.5H9V3.5H8ZM8.14645 3.14645L2.64645 8.64645L3.35355 9.35355L8.85355 3.85355L8.14645 3.14645Z" fill="var(--grey1)"/>
+                                                    </svg>
+                                                </span>
+                                            </>
+                                        ) : (
+                                            item.heading || item.handle
+                                        )}
+                                    </div>
+                                    
+                                    {item.location && <div class="location">{item.location}</div>}
+                                    
+                                    {item.description && (
+                                        <div class="description" set:html={renderMarkdown(item.description)} />
+                                    )}
+
+                                    {item.attachments && item.attachments.length > 0 && (
+                                        <div class="attachments">
+                                            <div class="attachments-list">
+                                                {item.attachments.map((media) => (
+                                                    <div class="media-item" onclick={`openLightbox('${media.url}')`}>
+                                                        {media.type === 'image' && (
+                                                            <img src={media.url} alt="" loading="lazy" />
+                                                        )}
+                                                        {media.type === 'video' && (
+                                                            <video src={media.url} muted playsinline />
+                                                        )}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            ))}
+
+		</main>
+		<Footer />
+
+        <!-- Lightbox Container -->
+        <div id="lightbox" onclick="closeLightbox()">
+            <img id="lightbox-img" src="" alt="Full size view" />
+        </div>
+
+        <script is:inline>
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+
+            function openLightbox(src) {
+                lightboxImg.src = src;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                setTimeout(() => {
+                     lightboxImg.src = '';
+                }, 300);
+                document.body.style.overflow = '';
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeLightbox();
+            });
+        </script>
+	</body>
+</html>

@@ -12,6 +12,7 @@ import HeaderLink from './HeaderLink.astro';
 		<div class="internal-links">
 			<HeaderLink href="/">/blog</HeaderLink>
 			<HeaderLink href="/gallery">/gallery</HeaderLink>
+			<HeaderLink href="/about">/about</HeaderLink>
 		</div>
 		<!-- social-links hidden for now
 		<div class="social-links">
@@ -77,6 +78,9 @@ import HeaderLink from './HeaderLink.astro';
 	@media (max-width: 720px) {
 		.social-links {
 			display: none;
+		}
+		.internal-links {
+			gap: 1em;
 		}
 	}
 </style>
