@@ -1,0 +1,182 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const galleryDir = path.join(process.cwd(), 'public', 'gallery');
+const files = fs.readdirSync(galleryDir).filter(file => {
+    const ext = path.extname(file).toLowerCase();
+    return ['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(ext);
+});
+
+// Sort files numerically if they start with numbers, otherwise alphabetically
+files.sort((a, b) => {
+    const numA = parseInt(a);
+    const numB = parseInt(b);
+    if (!isNaN(numA) && !isNaN(numB)) {
+        return numA - numB;
+    }
+    return a.localeCompare(b);
+});
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`Gallery | ${SITE_TITLE}`} description="A collection of artwork." />
+		<style>
+            /* Layout */
+			main {
+				width: 960px;
+                max-width: calc(100% - 2em);
+                margin: auto;
+                padding: 3em 1em;
+			}
+            .gallery-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2rem;
+                padding: 0;
+                list-style: none;
+            }
+
+            .gallery-intro {
+                text-align: center;
+                margin-bottom: 3rem;
+                font-style: italic;
+                color: rgb(var(--gray));
+                font-size: 1.1em;
+                font-family: 'Georgia', serif; 
+            }
+
+            /* The Frame */
+            .gallery-item {
+                background-color: #fff; /* White matte */
+                padding: 15px; /* The width of the matte */
+                box-shadow: 
+                    0 1px 3px rgba(0,0,0,0.12), 
+                    0 1px 2px rgba(0,0,0,0.24); /* Subtle depth */
+                transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+                cursor: pointer;
+                border: 1px solid #e0e0e0; /* Very subtle outer definition */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .gallery-item:hover {
+                box-shadow: 
+                    0 14px 28px rgba(0,0,0,0.25), 
+                    0 10px 10px rgba(0,0,0,0.22);
+                transform: translateY(-2px);
+                z-index: 1;
+            }
+
+            .gallery-item img {
+                width: 100%;
+                height: auto;
+                display: block;
+                /* Optional: Inner border for the image itself to separate from matte */
+                border: 1px solid rgba(0,0,0,0.05); 
+            }
+
+            /* Lightbox / Dimmed Viewer */
+            #lightbox {
+                position: fixed;
+                z-index: 1000;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.85); /* Dimmed background */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+            }
+
+            #lightbox.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            #lightbox img {
+                max-width: 90%;
+                max-height: 90vh;
+                box-shadow: 0 0 20px rgba(0,0,0,0.5);
+                border: 10px solid #fff; /* Frame in lightbox too */
+                transform: scale(0.9);
+                transition: transform 0.3s ease;
+            }
+
+            #lightbox.active img {
+                transform: scale(1);
+            }
+
+            @media (max-width: 720px) {
+                .gallery-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 1rem;
+                }
+                main {
+                    padding: 1em;
+                }
+            }
+            @media (max-width: 480px) {
+                .gallery-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+            <p class="gallery-intro">Dibujos de mi amada esposa</p>
+            <section>
+                <ul class="gallery-grid">
+                    {files.map((file) => (
+                        <li class="gallery-item" onclick={`openLightbox('/gallery/${file}')`}>
+                            <img src={`/gallery/${file}`} alt={file} loading="lazy" />
+                        </li>
+                    ))}
+                </ul>
+            </section>
+		</main>
+		<Footer />
+
+        <!-- Lightbox Container -->
+        <div id="lightbox" onclick="closeLightbox()">
+            <img id="lightbox-img" src="" alt="Full size view" />
+        </div>
+
+        <script is:inline>
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+
+            function openLightbox(src) {
+                lightboxImg.src = src;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                setTimeout(() => {
+                     lightboxImg.src = '';
+                }, 300); // Wait for fade out
+                document.body.style.overflow = '';
+            }
+
+            // Close on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeLightbox();
+            });
+        </script>
+	</body>
+</html>
