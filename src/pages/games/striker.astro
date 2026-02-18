@@ -1,0 +1,206 @@
+---
+import BaseHead from '../../components/BaseHead.astro'
+import Footer from '../../components/Footer.astro'
+import Header from '../../components/Header.astro'
+import { SITE_TITLE } from '../../consts'
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <BaseHead title={`Game | ${SITE_TITLE}`} description="ASCII vertical shooter inspired by arcade classics" />
+    <style>
+      main {
+        width: 100%;
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 0.4rem 0.75rem 1.25rem;
+      }
+
+      .game-layout {
+        display: grid;
+        justify-items: center;
+        gap: 0;
+      }
+
+      .game-shell {
+        width: min(100%, 420px);
+        display: grid;
+      }
+
+      .game-viewport {
+        position: relative;
+        width: min(100%, 420px);
+        margin: 0 auto;
+        aspect-ratio: 9 / 16;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 2px solid #073642;
+        background:
+          radial-gradient(circle at 20% -10%, rgba(56, 81, 124, 0.35), transparent 48%),
+          radial-gradient(circle at 80% 110%, rgba(41, 56, 94, 0.3), transparent 40%),
+          linear-gradient(180deg, #020413 0%, #02020a 100%);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.32);
+        touch-action: none;
+        user-select: none;
+      }
+
+      .game-screen {
+        position: absolute;
+        left: 0;
+        top: 0;
+        margin: 0;
+        padding: 0;
+        color: #dce8ff;
+        font-family: 'IBM Plex Mono', 'SFMono-Regular', 'Menlo', 'Consolas', monospace;
+        font-size: 9px;
+        line-height: 1;
+        white-space: pre;
+        letter-spacing: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .hud-inline {
+        position: absolute;
+        top: 0.45rem;
+        left: 0.45rem;
+        right: 0.45rem;
+        z-index: 3;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.3rem;
+      }
+
+      .hud-item {
+        padding: 0.18rem 0.3rem;
+        border-radius: 6px;
+        background: rgba(4, 8, 24, 0.72);
+        color: #9aa7cc;
+        font-size: 0.56rem;
+        line-height: 1.2;
+      }
+
+      .hud-item strong {
+        display: block;
+        margin-top: 0.06rem;
+        color: #f7fbff;
+        font-size: 0.72rem;
+      }
+
+      .overlay {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        padding: 1rem;
+        background: rgba(0, 20, 26, 0.78);
+        color: #fdf6e3;
+        z-index: 5;
+      }
+
+      .overlay.is-hidden {
+        display: none;
+      }
+
+      .overlay-card {
+        max-width: 90%;
+        display: grid;
+        gap: 0.7rem;
+      }
+
+      .overlay h2 {
+        margin: 0;
+        font-size: 1.3rem;
+      }
+
+      .overlay p {
+        margin: 0;
+        color: #93a1a1;
+        font-size: 0.95rem;
+        line-height: 1.4;
+      }
+
+      .overlay button,
+      .bomb-button {
+        border: 0;
+        border-radius: 10px;
+        background: #268bd2;
+        color: #fdf6e3;
+        padding: 0.5rem 0.85rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .overlay button:hover,
+      .bomb-button:hover {
+        background: #2f99e3;
+      }
+
+      .bomb-button {
+        position: absolute;
+        right: 0.8rem;
+        bottom: 0.8rem;
+        min-width: 84px;
+        min-height: 44px;
+        background: #dc322f;
+      }
+
+      .bomb-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      @media (max-width: 780px) {
+        main {
+          padding: 0.2rem 0.5rem 1rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .game-viewport {
+          background: #00141a;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <section class="game-layout">
+        <div class="game-shell">
+          <div id="game-viewport" class="game-viewport" aria-label="ASCII shooter viewport">
+            <div class="hud-inline" aria-live="polite">
+              <div class="hud-item">SCORE<strong id="score-value">0</strong></div>
+              <div class="hud-item">HI<strong id="high-score-value">0</strong></div>
+              <div class="hud-item">WAVE<strong id="wave-value">1</strong></div>
+              <div class="hud-item">LIFE<strong id="life-value">▲▲▲</strong></div>
+              <div class="hud-item">BOMB<strong id="bomb-value">●●</strong></div>
+              <div class="hud-item">POW<strong id="power-value">L1</strong></div>
+            </div>
+
+            <pre id="game-screen" class="game-screen" aria-label="ASCII shooter game screen"></pre>
+
+            <div id="game-overlay" class="overlay">
+              <div class="overlay-card">
+                <h2 id="overlay-title">ASCII STRIKER</h2>
+                <p id="overlay-subtitle">탭/클릭으로 시작. 기본샷 자동 발사, Bomb은 긴급 회피용.</p>
+                <button id="overlay-action" type="button">START</button>
+              </div>
+            </div>
+
+            <button id="bomb-button" class="bomb-button" type="button" aria-label="Use bomb">BOMB</button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <Footer />
+
+    <script>
+      import { mountAsciiShooter } from '../../games/striker/client'
+
+      mountAsciiShooter()
+    </script>
+  </body>
+</html>
