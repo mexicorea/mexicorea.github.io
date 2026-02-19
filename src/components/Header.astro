@@ -3,16 +3,21 @@ import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 ---
 
-<header>
+<header class="site-header">
 	<nav>
 		<a href="/" class="site-branding">
-			<img src="/mexicorea.png" alt="mexicorea" class="profile-pic" />
-			<h2>{SITE_TITLE}</h2>
+			<span class="sr-only">{SITE_TITLE}</span>
+			<pre class="ascii-brand" aria-hidden="true">███╗   ███╗███████╗██╗  ██╗██╗ ██████╗ ██████╗ ██████╗ ███████╗ █████╗ 
+████╗ ████║██╔════╝╚██╗██╔╝██║██╔════╝██╔═══██╗██╔══██╗██╔════╝██╔══██╗
+██╔████╔██║█████╗   ╚███╔╝ ██║██║     ██║   ██║██████╔╝█████╗  ███████║
+██║╚██╔╝██║██╔══╝   ██╔██╗ ██║██║     ██║   ██║██╔══██╗██╔══╝  ██╔══██║
+██║ ╚═╝ ██║███████╗██╔╝ ██╗██║╚██████╗╚██████╔╝██║  ██║███████╗██║  ██║
+╚═╝     ╚═╝╚══════╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝</pre>
 		</a>
 		<div class="internal-links">
-			<HeaderLink href="/">/blog</HeaderLink>
-			<HeaderLink href="/gallery">/gallery</HeaderLink>
-			<HeaderLink href="/about">/about</HeaderLink>
+			<HeaderLink href="/">blog</HeaderLink>
+			<HeaderLink href="/gallery">gallery</HeaderLink>
+			<HeaderLink href="/about">about</HeaderLink>
 		</div>
 		<!-- social-links hidden for now
 		<div class="social-links">
@@ -22,36 +27,50 @@ import HeaderLink from './HeaderLink.astro';
 	</nav>
 </header>
 <style>
-	header {
+	.site-header {
 		margin: 0;
 		padding: 0 1em;
 		background: linear-gradient(var(--gray-gradient)) no-repeat;
 	}
 	.site-branding {
 		justify-self: start;
-		display: flex;
+		display: block;
 		align-items: center;
-		gap: 0.5em;
 		text-decoration: none;
-		color: var(--black);
-		padding: 1em 0.5em; /* Match original nav a padding */
+		color: rgb(var(--black));
+		padding: 0;
+		height: 36px;
+		width: min(42vw, 300px);
+		max-width: min(42vw, 300px);
+		overflow: hidden;
+		position: relative;
 	}
 	.site-branding:hover {
 		text-decoration: none;
 	}
-	img.profile-pic {
-		width: 34px !important;
-		max-width: 34px;
-		height: 34px !important;
-		border-radius: 50%;
-		object-fit: cover;
-		aspect-ratio: 1 / 1;
-		flex-shrink: 0;
-	}
-	h2 {
+	.ascii-brand {
 		margin: 0;
-		font-size: 1.2em;
-		color: inherit;
+		color: var(--accent-dark);
+		font-family:
+			"IBM Plex Mono",
+			"Fira Code",
+			"JetBrains Mono",
+			"SFMono-Regular",
+			Menlo,
+			Monaco,
+			Consolas,
+			"Liberation Mono",
+			"Courier New",
+			monospace;
+		font-size: 1rem;
+		line-height: 1;
+		letter-spacing: 0;
+		white-space: pre;
+		position: absolute;
+		left: 0;
+		top: 50%;
+		transform: translateY(-50%) scale(0.34);
+		transform-origin: left center;
 	}
 	nav {
 		display: grid;
@@ -64,18 +83,20 @@ import HeaderLink from './HeaderLink.astro';
 		gap: 2em;
 	}
 	.internal-links a {
-		font-style: italic;
-	}
-	/* Removed generic nav a styling collision potential, kept specific ones or relied on inheritance */
-	nav a.active {
-		text-decoration: none;
-		border-bottom-color: var(--accent);
+		font-style: normal;
 	}
 	.social-links,
 	.social-links a {
 		display: flex;
 	}
 	@media (max-width: 720px) {
+		.site-branding {
+			width: min(52vw, 220px);
+			max-width: min(52vw, 220px);
+		}
+		.ascii-brand {
+			transform: translateY(-50%) scale(0.27);
+		}
 		.social-links {
 			display: none;
 		}
