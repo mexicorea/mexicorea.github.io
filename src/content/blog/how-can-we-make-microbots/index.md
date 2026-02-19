@@ -5,8 +5,6 @@ pubDate: 'Apr 3 2022'
 heroImage: './hero.jpg'
 ---
 
-![Microbots in Big Hero 6](./hero.jpg)
-
 오늘 아침 아들램과 오랜만에 **Big Hero 6** 영화를 보는데, 이런 질문이 들어 왔다.
 
 > "Daddy, how can we make microbots?"
