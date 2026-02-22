@@ -37,6 +37,14 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 				padding: 1em;
 				color: rgb(var(--gray-dark));
 			}
+			:global(.prose a.external-link)::after {
+				content: '↗';
+				display: inline-block;
+				margin-left: 0.18em;
+				font-size: 0.74em;
+				line-height: 1;
+				vertical-align: super;
+			}
 			.title {
 				margin-bottom: 1em;
 				padding: 1em 0;
@@ -162,13 +170,57 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 				}
 			};
 
+			const enhanceExternalLinks = () => {
+				const links = document.querySelectorAll('.prose a[href]');
+				for (const link of links) {
+					if (!(link instanceof HTMLAnchorElement)) {
+						continue;
+					}
+
+					const href = link.getAttribute('href');
+					if (!href) {
+						continue;
+					}
+					if (href.startsWith('#')) {
+						continue;
+					}
+
+					let url;
+					try {
+						url = new URL(href, window.location.href);
+					} catch {
+						continue;
+					}
+
+					const isHttp = url.protocol === 'http:' || url.protocol === 'https:';
+					if (!isHttp || url.origin === window.location.origin) {
+						continue;
+					}
+
+					link.target = '_blank';
+					link.rel = 'noopener noreferrer';
+					link.classList.add('external-link');
+				}
+			};
+
 			if (document.readyState === 'loading') {
-				document.addEventListener('DOMContentLoaded', enhanceCodeBlocks, { once: true });
+				document.addEventListener(
+					'DOMContentLoaded',
+					() => {
+						enhanceCodeBlocks();
+						enhanceExternalLinks();
+					},
+					{ once: true },
+				);
 			} else {
 				enhanceCodeBlocks();
+				enhanceExternalLinks();
 			}
 
-			document.addEventListener('astro:page-load', enhanceCodeBlocks);
+			document.addEventListener('astro:page-load', () => {
+				enhanceCodeBlocks();
+				enhanceExternalLinks();
+			});
 		</script>
 	</body>
 </html>
