@@ -2,6 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import SummerOverlay from '../components/SummerOverlay.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -178,5 +179,6 @@ files.sort((a, b) => {
                 if (e.key === 'Escape') closeLightbox();
             });
         </script>
+		<SummerOverlay />
 	</body>
 </html>
