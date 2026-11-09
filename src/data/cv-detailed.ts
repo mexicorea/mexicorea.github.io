@@ -21,8 +21,23 @@ export const cv = {
       "name": "Work Experience",
       "items": [
         {
+          "id": "day1company-2026",
+          "year": "2026 — Now",
+          "heading": "Senior Engineer at 데이원컴퍼니",
+          "url": "https://day1company.co.kr/",
+          "collaborators": [],
+          "description": `취업을 준비하는 신입/경력 수강생과 전문 컨설턴트/멘토를 연결하는 취업정보회사 제로베이스 서비스를 개발합니다. 수강생 앱, 파트너 앱, 그리고 백오피스 전반을 총괄합니다.
+
+**사용 기술:** TypeScript, Node.js, NestJS, MySQL, Redis, GCP`,
+          "attachments": [],
+          "type": "workExperience",
+          "title": "Senior Engineer",
+          "company": "데이원컴퍼니",
+          "location": "Seoul, Korea"
+        },
+        {
           "id": "2z7tmUnFxuHpt9zvMtdX",
-          "year": "2021 — Now",
+          "year": "2021 — 2026",
           "heading": "CTO at 부에노컴퍼니",
           "url": "https://www.temply.co.kr/",
           "collaborators": [],
